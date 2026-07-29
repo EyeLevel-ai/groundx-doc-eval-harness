@@ -1,19 +1,14 @@
-# Pre-registration
+# Locked Before Running
 
-Every file in this directory is frozen **before any evaluation arm runs**. The freeze is recorded in `MANIFEST.sha256` (one hash per file) and the manifest's own hash is committed in a tagged git commit. After freeze, changes to these files invalidate the run and require a new pre-registration round, stated publicly in the results.
-
-## Contents (to be authored and frozen — Week 1)
+Everything in this folder is finalized **before any system answers a single test question**. When it's final, we publish a checksum of every file (in `MANIFEST.sha256`); changing anything afterward would change the checksum and be visible to everyone. That's the point: the rules can't move after the results exist.
 
 | File | What it locks |
 |---|---|
-| `document-selection-rule.md` | The mechanical rule that selects corpus documents (no hand-picking, no exclusions) |
-| `question-set.jsonl` | All questions + ground-truth answers + page-level citations, authored before any system runs |
-| `question-taxonomy.md` | Fixed quotas per question type (table lookup / narrative / cross-page / figure-chart) |
-| `frontier-arm-protocol.md` | Leaderboard rule for model choice, context construction, truncation handling, re-run rule, cost reporting |
-| `decision-rule.md` | The mechanical criterion for featuring comparative numbers externally |
-| `judge-prompts/` | Pinned prompts for both judges |
-| `MANIFEST.sha256` | Hash of every file above at freeze |
+| `corpus-shortlist.md` | Which documents the test library contains, and the rule that chose them |
+| `question-taxonomy.md` | The ~150 questions' types and quotas |
+| `judge-prompts/` | The exact grading instructions given to the two AI graders |
+| `frontier-arm-protocol.md` | The rules for the "just paste it into a giant model" comparison |
+| `decision-rule.md` | The pre-agreed bar for publicly claiming a win |
+| `MANIFEST.sha256` | Checksums of all of the above at lock time |
 
-## Corpus veto
-
-NVIDIA (or any re-runner) may nominate or veto the corpus — including the fallback corpus — via the documented methodology-call process. Swapping corpora is a one-flag change; the pre-registration discipline applies to the replacement equally.
+Anyone — including NVIDIA — may propose or veto the document library before lock. Swapping the library re-runs the same locking process on the replacement.

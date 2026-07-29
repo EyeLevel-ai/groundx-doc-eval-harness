@@ -1,23 +1,18 @@
-# Featured-number decision rule — DRAFT (task 2.3)
+# When Are We Allowed to Claim a Win?
 
-Frozen and hashed before any arm runs. The go/no-go on featuring comparative numbers externally is **mechanical**, decided by this rule — never a judgment call made while looking at results.
+This rule is written down and locked **before** the test runs, so the decision is mechanical — not a judgment call made while looking at the numbers.
 
-## Rule
+## The rule
 
-Comparative results may be **featured** (headlines, one-pagers, external decks) only if, on the frozen question set with N ≥ 150, 3 replicates per arm, and both judges:
+Each system answers every question three times. Two independent graders (two different AI models, with published grading instructions and spot-checked by a person) mark each answer right or wrong. From those marks we compute each system's accuracy, plus a statistical confidence range — the band the true accuracy almost certainly falls inside given this many questions.
 
-> **GroundX's bootstrap 95% confidence-interval lower bound on answer accuracy exceeds the best blueprint arm's (defaults or tuned, whichever is higher) CI upper bound**, under both judges independently.
+**We may publicly claim GroundX outperformed the comparison system only if the *bottom* of GroundX's confidence range is higher than the *top* of the other system's range — according to both graders independently.**
 
-Otherwise, the harness and full results still ship as a transparency artifact, and external material leads with integration + deployment (no comparative accuracy claims).
+In plain terms: the gap has to be big enough that it can't be explained by luck or grader noise. With ~150 questions, that means roughly an 8-point accuracy gap or more. A 74%-versus-72% result does not qualify, and we say so.
 
-## Reporting requirements regardless of outcome
+## What gets published no matter who wins
 
-- Point estimates with bootstrap CIs for all four arms (including the frontier long-context arm, whatever it shows)
-- Citation-accuracy reported separately from answer accuracy
-- Per-arm infrastructure-error/timeout rates (errors excluded from scoring, logged)
-- Per-question CSVs + replicate variance + cross-judge agreement
-- Frontier arm: per-question token cost next to accuracy; standing re-run rule on leaderboard change
-
-## Detectable effect note
-
-With N = 150 and typical accuracy variance, the CI-separation criterion roughly requires a true gap of ~8–12 percentage points to trigger **[to compute exactly at freeze with the pilot variance measurement]**. Smaller true gaps will (correctly) fail to feature.
+- Accuracy and confidence range for every system tested
+- Answer accuracy and citation accuracy reported separately
+- How often each system failed for technical reasons (timeouts, errors) — those don't count as wrong answers, but they are counted and shown
+- Every question, every answer, every grade — in downloadable files, so anyone can re-check any row

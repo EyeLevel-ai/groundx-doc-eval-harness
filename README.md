@@ -1,36 +1,34 @@
-# GroundX Document-QA Evaluation Harness
+# Document Question-Answering Evaluation
 
-A **pre-registered, four-arm, reproducible** evaluation harness for document question-answering over visually complex enterprise documents. Built so that anyone — including NVIDIA engineers — can re-run it, substitute their own configurations, or swap in their own corpus with a one-flag change.
+A head-to-head accuracy test for systems that answer questions from libraries of complex documents (dense tables, long filings, charts). Built so that anyone — including the vendors being compared — can re-run it, substitute their own configurations, or swap in their own document library.
 
-## The four arms
+## The four systems compared
 
-| Arm | System | What it answers |
+| # | System | Question it answers |
 |---|---|---|
-| 1 | **GroundX** (self-hosted Helm deployment) | The subject under test |
-| 2 | **NVIDIA RAG blueprint v2.6.0** — documented defaults, unmodified | The partnership question |
-| 3 | **NVIDIA RAG blueprint** — its own documented tuning recommendations | Removes the "you benchmarked the floor" objection |
-| 4 | **Frontier long-context model, no retrieval** — chosen mechanically from a named public leaderboard at freeze date | The durability question |
+| 1 | GroundX, self-hosted | The system under test |
+| 2 | NVIDIA's RAG blueprint, factory settings | How does GroundX compare to the reference stack, untouched? |
+| 3 | NVIDIA's RAG blueprint, tuned per its own docs | Removes "you tested a badly configured baseline" |
+| 4 | A frontier model with the documents pasted in whole | Would skipping retrieval entirely work better? |
 
-## Neutrality mechanisms (the point of this repo)
+## Why the results can be trusted
 
-- **Pre-registration:** document-selection rule, question set, question-type quotas, frontier-arm protocol, and the featured-number decision rule are frozen and SHA-256-hashed in [`preregistration/`](preregistration/) **before any arm runs**.
-- **Mechanical corpus selection:** documents chosen by a stated rule, not hand-picked.
-- **Configs are inputs:** every arm's configuration is a committed, pinned file. Substituting an alternative config (yours) is a first-class path — see `configs/README.md`.
-- **Infra errors are not wrong answers:** timeouts and endpoint failures are excluded from scoring, logged, and reported per-arm alongside accuracy.
-- **Dual judge:** two independent scoring judges with published prompts and cross-judge agreement stats; ≥10% independent human spot-check.
-- **Statistics:** N ≥ 150 questions, ≥3 replicates, bootstrap confidence intervals — never bare point accuracy.
-- **Decision rule:** comparative results are featured externally only if the pre-registered criterion is met. Otherwise this repo ships as a transparency artifact, whatever the numbers say.
+- **The rules are locked before anything runs.** Document library, questions, grading instructions, and the bar for claiming a win are finalized and checksummed first — see [`preregistration/`](preregistration/).
+- **Documents are chosen by a stated rule**, not hand-picked.
+- **Configurations are inputs.** Every system's settings are committed files; substituting your own is supported and documented.
+- **Two independent graders** (different AI models, published instructions, human spot-checks), each question answered three times.
+- **Technical failures aren't wrong answers.** Timeouts and errors are excluded from scoring but counted and published per system.
+- **Everything ships**: every question, answer, grade, and confidence range, in downloadable files — whatever the outcome.
 
-## Repo layout
+## Repository layout
 
 ```
-preregistration/   frozen + hashed: selection rule, QA set, taxonomy, protocols, decision rule
-configs/           pinned per-arm configs (substitutable)
-harness/           runners, scoring, judges, bootstrap stats
-results/           per-question CSVs, replicate variance, per-arm error rates
-gallery/           auto-generated side-by-side answer gallery (scripted case selection)
+preregistration/   the locked rules: documents, questions, grading, win criteria
+configs/           each system's exact settings (substitutable)
+harness/           the code that runs systems, grades answers, computes statistics
+results/           per-question output files (empty until the test runs)
 ```
 
 ## Status
 
-Work in progress — pre-registration phase. Nothing has been run; no numbers exist. That's the point: the rules come first.
+Rules are drafted and under review. No test has been run; no numbers exist yet.

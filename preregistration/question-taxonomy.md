@@ -1,27 +1,14 @@
-# Question-type taxonomy and quotas — DRAFT for SME sign-off (task 2.3)
+# Question Types and Quotas
 
-Fixed quotas bound authorship bias on question *mix* (not just document selection). Frozen and hashed with the question set before any arm runs. N ≥ 150 total.
+About 150 questions total, written by a person before any system runs. Fixed quotas prevent the question mix from favoring either system. The mix below is locked (with its checksum) when the test locks.
 
-| Type | Quota | Definition | Example shape |
+| Type | Share | What it tests | Example shape |
 |---|---|---|---|
-| **Table lookup** | 30% | Answer is a value or row inside a table; requires reading table structure, not prose | "What is the [column] for [row entity] in [table/section]?" |
-| **Narrative extraction** | 25% | Answer is stated in body text; single location | "Under what conditions does [policy/term] apply?" |
-| **Cross-page synthesis** | 20% | Answer requires combining evidence from ≥2 pages | "How does the [item] defined on one page apply to the scenario described elsewhere?" |
-| **Figure/chart/diagram** | 15% | Answer requires reading a non-text element (chart axis, diagram label, form checkbox) | "What value does the chart show for [category]?" |
-| **Unanswerable / not-in-corpus** | 10% | Ground truth is "the documents do not contain this"; scores grounding discipline (hallucination check) | Plausible question whose answer is absent |
+| Find the right document | 20% | Locate one document among fifteen, then answer from it | "What did [company] report as [item] in its annual report?" |
+| Table lookup | 20% | Read a value out of a dense table | "What is [column value] for [row] in [company]'s [table]?" |
+| **Across documents** | 25% | Combine information from two or more documents | "Which company reported the highest [item], and by how much over the second?" |
+| Across pages, one document | 10% | Combine information from different pages of one long filing | "How does the risk described in [section] relate to the figure reported in [other section]?" |
+| Charts and figures | 10% | Read a non-text element | "What does the chart in [section] show for [year]?" |
+| Not in the library | 15% | Refusing to invent an answer | A plausible question whose answer is genuinely absent |
 
-## Ground-truth format (per question)
-
-```json
-{"qid": "", "type": "table|narrative|crosspage|figure|unanswerable",
- "question": "", "answer": "", "answer_alternates": [],
- "evidence": [{"doc": "", "pages": []}], "author": "", "authored_before_runs": true}
-```
-
-Citation accuracy is scored against `evidence.pages` — a correct answer with a wrong citation is scored separately (both metrics reported).
-
-## Sign-off checklist (SME)
-
-- [ ] Quotas reflect the document classes that stall real deals (adjust percentages with rationale, before freeze)
-- [ ] Unanswerable set reviewed so none are accidentally answerable
-- [ ] Every question authored before any system run; authorship recorded per question
+Every question is recorded with: the question, the correct answer, acceptable alternate phrasings, and the exact document(s) and page(s) where the answer lives. Answers are graded on two things separately: **is the answer right**, and **does the citation point to the true source page**.
