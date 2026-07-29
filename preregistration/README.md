@@ -12,4 +12,4 @@ Everything in this folder is finalized **before any system answers a single test
 | `decision-rule.md` | The pre-agreed bar for publicly claiming a win |
 | `MANIFEST.sha256` | Checksums of all of the above at lock time |
 
-Anyone — including NVIDIA — may propose or veto the document library before lock. Swapping the library re-runs the same locking process on the replacement.
+Anyone — including NVIDIA, whose RAG blueprint is one of the systems under test — may propose or veto the document library before lock. Swapping the library re-runs the same locking process on the replacement.
