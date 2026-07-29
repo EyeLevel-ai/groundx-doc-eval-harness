@@ -80,10 +80,13 @@ def blueprint_arm(item: QAItem, cfg: dict, replicate: int) -> ArmAnswer:
 
 
 def frontier_arm(item: QAItem, cfg: dict, replicate: int) -> ArmAnswer:
-    """Frontier long-context, gold-document-only (upper bound; per protocol)."""
+    """Frontier model, whole library per request (per protocol; native file upload
+    where the provider supports it, else full text with page markers). If the
+    library exceeds the context window, the resulting error is recorded as the
+    finding — not worked around."""
     t0 = time.time()
     try:
-        doc_text = cfg["gold_text_loader"](item)  # callable: QAItem -> str (with page markers)
+        doc_text = cfg["library_text_loader"](item)  # callable: QAItem -> str (entire library, page markers)
         r = httpx.post(
             f"{cfg['base_url']}/chat/completions",
             headers={"Authorization": f"Bearer {os.environ[cfg['api_key_env']]}"},

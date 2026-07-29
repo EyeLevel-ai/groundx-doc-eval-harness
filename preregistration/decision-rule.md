@@ -1,6 +1,6 @@
 # When We May Claim a Win
 
-**The rule: we publicly claim GroundX outperformed the comparison system only if GroundX's accuracy lead is roughly 8 points or more — a gap too large for luck to explain with ~150 questions. Smaller leads are published as results, with no winner claimed.**
+The rule: we publicly claim GroundX outperformed the comparison system only if GroundX's accuracy lead is roughly **8 points or more** — a gap too large for luck to explain with ~150 questions. Smaller leads are published as results, with no winner claimed.
 
 This rule is locked before the test runs, so the call is mechanical — never a judgment made while looking at the numbers.
 
