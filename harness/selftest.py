@@ -60,14 +60,15 @@ check("verdict parser tolerates wrapping", v["correct"] is True)
 # prompt loads + placeholders resolve
 tpl = load_prompt()
 try:
-    tpl.format(question="q", reference="r", alternates="a", evidence="e", candidate="c", citations="[]", qtype="table")
+    tpl.format(question="q", reference="r", alternates="a", evidence="e", candidate="c", citations="[]",
+               source_type="table", reach="single")
     check("judge prompt placeholders resolve", True)
 except KeyError as e:
     check("judge prompt placeholders resolve", False, repr(e))
 
 # optional live smoke
 if "--live" in sys.argv:
-    item = QAItem(qid="live1", qtype="table", question="What is 2+2?", answer="4",
+    item = QAItem(qid="live1", source_type="table", reach="single", question="What is 2+2?", answer="4",
                   evidence=[{"doc": "math.pdf", "pages": [1]}])
     good = ArmAnswer(qid="live1", arm="t", replicate=1, answer_text="The answer is 4.",
                      citations=[{"doc": "math.pdf", "page": 1}])

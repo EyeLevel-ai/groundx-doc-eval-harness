@@ -1,6 +1,7 @@
 You are grading a document question-answering system. Judge ONLY against the reference; do not use outside knowledge.
 
-Question type: {qtype}
+Answer source type: {source_type}
+Reach: {reach}
 Question: {question}
 Reference answer: {reference}
 Acceptable alternates: {alternates}
@@ -10,8 +11,8 @@ Candidate answer: {candidate}
 Candidate citations (JSON): {citations}
 
 Rules:
-- "correct" = the candidate conveys the same substantive answer as the reference (numeric values must match; wording may differ). For qtype "unanswerable", correct means the candidate states the information is not present — any substantive answer is incorrect.
-- "citation_correct" = at least one candidate citation points to a gold evidence document AND page. null if the candidate gave no citations or qtype is "unanswerable".
+- "correct" = the candidate conveys the same substantive answer as the reference (numeric values must match; wording may differ). For source type "unanswerable", correct means the candidate states the information is not present — any substantive answer is incorrect.
+- "citation_correct" = at least one candidate citation points to a gold evidence document AND page. null if the candidate gave no citations or the source type is "unanswerable".
 - Be strict: partial answers, hedges that avoid the value, or wrong units are incorrect.
 
 Reply with exactly one JSON object and nothing else:

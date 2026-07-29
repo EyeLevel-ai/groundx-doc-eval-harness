@@ -1,10 +1,12 @@
 # Question Design
 
-~150 questions, finalized before any system runs. To keep the workload sane, questions are **drafted by an AI assistant reading the documents directly** — independent of every system under test — **and each one is verified by a person** against the source page before lock. The verifier's decision is final. Each question is categorized by **where its answer lives in the document** — following the method of EyeLevel's published accuracy test ([eyelevel.ai/post/most-accurate-rag](https://www.eyelevel.ai/post/most-accurate-rag)).
+~150 questions, finalized before any system runs. Questions are **drafted by an AI assistant reading the documents directly** — independent of every system under test — **and each one is verified by a person** against the source page before lock. The verifier is a named reviewer recorded in the lock manifest; verification happens entirely before lock, so the verifier never sees any system's output. NVIDIA has the same propose/veto right over the question set that it has over the document library ([corpus-shortlist.md](corpus-shortlist.md)): objections to any question before lock remove or replace it, and the replacement re-verifies the same way.
+
+Each question is categorized on two independent dimensions: **where its answer lives** (source type) and **how far the system must look** (reach). The categorization method follows EyeLevel's [published accuracy test](https://www.eyelevel.ai/post/most-accurate-rag).
 
 ## Why split by answer source
 
-Enterprise documents carry information three different ways — in figures, in table structure, and in prose — and retrieval systems differ most in how well they read the first two. Splitting the questions evenly across all three sources, plus a set with no answer present, gives broad coverage of how information actually needs to be retrieved from documents.
+Documents carry information three ways — in figures, in table structure, and in prose. An even split across all three, plus a set with no answer present, covers every way information has to be retrieved without weighting the test toward any one system's strengths.
 
 ## The mix
 

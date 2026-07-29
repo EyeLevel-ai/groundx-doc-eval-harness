@@ -8,7 +8,9 @@ from dataclasses import dataclass, field, asdict
 @dataclass
 class QAItem:
     qid: str
-    qtype: str  # table | narrative | crosspage | figure | unanswerable
+    # Two independent dimensions, matching preregistration/question-taxonomy.md:
+    source_type: str  # figure | table | text | unanswerable  (where the answer lives)
+    reach: str  # single | crosspage | crossdoc  (how far the system must look)
     question: str
     answer: str
     answer_alternates: list[str] = field(default_factory=list)

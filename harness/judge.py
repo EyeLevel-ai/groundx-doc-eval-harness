@@ -70,7 +70,8 @@ def judge_one(item: QAItem, ans: ArmAnswer, judge: str, prompt_template: str) ->
         evidence=evidence,
         candidate=ans.answer_text,
         citations=json.dumps(ans.citations),
-        qtype=item.qtype,
+        source_type=item.source_type,
+        reach=item.reach,
     )
     messages = []
     if cfg["system_extra"]:

@@ -12,7 +12,7 @@ Fallbacks if NTSB sourcing fails a licensing or availability check: municipal bu
 
 Questions are written to the mix in `question-taxonomy.md` before any system runs.
 
-**Secondary set:** EyeLevel's published test (1,146 pages of public Deloitte documents, 92 questions — [eyelevel.ai/post/most-accurate-rag](https://www.eyelevel.ai/post/most-accurate-rag)) also runs, for continuity with published results. It is reported separately, never as the headline: GroundX has published results on it before.
+**Secondary set:** the corpus from EyeLevel's [published accuracy test](https://www.eyelevel.ai/post/most-accurate-rag) also runs, for continuity with prior results; it is reported separately, never as the headline, because GroundX has published results on it before.
 
 ## Locking
 
