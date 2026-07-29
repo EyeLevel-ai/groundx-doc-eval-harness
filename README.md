@@ -4,12 +4,12 @@ A head-to-head accuracy test for systems that answer questions from libraries of
 
 ## The four systems compared
 
-| # | System | What it tests |
+| # | System | Why it's here |
 |---|---|---|
-| 1 | GroundX, self-hosted | Accuracy of the system being evaluated |
-| 2 | NVIDIA's RAG blueprint, factory settings | Accuracy of the reference stack as it ships |
-| 3 | NVIDIA's RAG blueprint, tuned per its own documentation | Accuracy of the reference stack at its documented best |
-| 4 | A frontier model with the relevant documents pasted in whole | Accuracy of skipping retrieval entirely and relying on a large model's reading |
+| 1 | GroundX, self-hosted | The system being evaluated |
+| 2 | NVIDIA's RAG blueprint, factory settings | The reference stack, untouched |
+| 3 | NVIDIA's RAG blueprint, tuned per its own documentation | The reference stack at its best |
+| 4 | A frontier model, relevant documents pasted in whole | No retrieval at all — the do-nothing alternative |
 
 Questions are split evenly across the three places answers live in documents — **figures and graphs**, **table and layout structure**, and **plain text** — plus a set whose answers aren't in the library at all, following the method of EyeLevel's [published accuracy test](https://www.eyelevel.ai/post/most-accurate-rag). See [`preregistration/question-taxonomy.md`](preregistration/question-taxonomy.md).
 
