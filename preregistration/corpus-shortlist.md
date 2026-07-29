@@ -2,34 +2,38 @@
 
 ## What the test must measure
 
-A real deployment answers questions against a **library of many documents** — the system must find the right document(s) first, then the right page. So the test library must support three kinds of questions:
+A real deployment answers questions against a **library of many documents**. The library and questions must therefore test:
 
-1. Questions whose answer lives in one document the system must locate among many.
-2. Questions that require **combining information from two or more documents** (for example: "Which of these companies reported the highest legal reserves, and how did the top two describe the risk?").
-3. Questions whose answer is **not in the library at all** — the correct response is "the documents don't contain this."
+- the three answer sources, hardest first: **figures/graphs**, **table/layout structure**, **plain text** (see `question-taxonomy.md`)
+- finding the right document among many, and combining information **across documents**
+- recognizing when the answer **isn't in the library at all**
 
-Single-document question sets, however good, cannot test the first two. That rules out most published document-Q&A benchmarks as the main test.
+## Two options
 
-## Proposed test library (recommended)
+### Option A — reuse the published test set
 
-**Fifteen recent annual reports (10-K filings), each over 150 pages, from the largest US public companies by market value on the date we lock the test.** Chosen by that rule mechanically — no hand-picking, no exclusions.
+EyeLevel already built and published exactly this kind of test: 1,146 pages of public Deloitte documents with 92 curated questions split across text, table, and figure sources ([eyelevel.ai/post/most-accurate-rag](https://www.eyelevel.ai/post/most-accurate-rag); documents, questions, and code are public).
 
-Why this works:
-- Public documents, no licensing problems, anyone can re-download them.
-- Visually hard: dense financial tables, footnotes, multi-hundred-page length.
-- Naturally supports cross-document questions (same disclosures across fifteen companies).
-- Neither GroundX nor NVIDIA has published accuracy results on this exact set.
+- **For:** proven design, already public, zero build time.
+- **Against:** GroundX has published winning results on this exact set, so a skeptic can argue the system was tuned to it. It also has few cross-document questions and no not-in-library questions.
 
-**Optional supplement:** a small set from a published single-document benchmark with difficult layouts (candidates: DUDE or MP-DocVQA), used only as an extra stress test on tables and figures — never as the headline number.
+### Option B — follow that design on fresh documents (recommended)
 
-## Rules that keep the test honest
+Build a new library the same way, on documents neither company has published results against, chosen by a stated rule — for example: *fifteen recent annual reports (10-K filings), each over 150 pages, from the largest US public companies by market value on the lock date.* Public, freely redistributable, dense with tables and charts, and naturally supports cross-document questions. New questions get written to the mix in `question-taxonomy.md`.
 
-- The document list and every question are written **before any system is run**, and their checksums are published so nothing can be quietly changed afterward.
+- **For:** immune to the "tuned to your own benchmark" objection; covers cross-document and not-in-library.
+- **Against:** ~150 questions must be written and verified by a person (the main cost).
+
+**Recommendation: Option B for the headline test, with Option A's set run as a secondary check** — it's already public, so reporting results on it costs nothing and adds continuity with the published test.
+
+## Rules that keep the test honest (either option)
+
+- Document list and all questions are finalized **before any system runs**; their checksums are published so nothing can change quietly afterward.
 - NVIDIA may veto or substitute the library before the test locks.
-- Questions are written by a person, to fixed quotas per question type (see `question-types.md`).
+- Documents are selected by a stated mechanical rule — no hand-picking.
 
 ## Approval needed
 
-- [ ] Confirm the fifteen-10-K library (or propose a different mechanical rule)
-- [ ] Yes/no on the single-document supplement
-- [ ] Name the person who will write and verify the ~150 questions
+- [ ] Option A, Option B, or both
+- [ ] If B: confirm the fifteen-10-K rule, or propose another mechanical rule
+- [ ] Name the person who writes and verifies the questions
