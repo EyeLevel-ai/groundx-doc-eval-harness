@@ -11,7 +11,7 @@ A head-to-head accuracy test for systems that answer questions from libraries of
 | 3 | NVIDIA's RAG blueprint, tuned per its own documentation | Accuracy of the reference stack at its documented best |
 | 4 | A frontier model with the relevant documents pasted in whole | Accuracy of skipping retrieval entirely and relying on a large model's reading |
 
-Questions are weighted toward the hardest parts of document Q&A — answers that live in **figures and graphs**, or that are implied by **table and layout structure** rather than written as text — following the design of EyeLevel's [published accuracy test](https://www.eyelevel.ai/post/most-accurate-rag). See [`preregistration/question-taxonomy.md`](preregistration/question-taxonomy.md).
+Questions are split evenly across the three places answers live in documents — **figures and graphs**, **table and layout structure**, and **plain text** — plus a set whose answers aren't in the library at all, following the method of EyeLevel's [published accuracy test](https://www.eyelevel.ai/post/most-accurate-rag). See [`preregistration/question-taxonomy.md`](preregistration/question-taxonomy.md).
 
 ## How the test is designed
 

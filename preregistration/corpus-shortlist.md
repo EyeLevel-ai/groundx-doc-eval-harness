@@ -21,15 +21,17 @@ EyeLevel already built and published exactly this kind of test: 1,146 pages of p
 
 Build a new library the same way, on documents neither company has published results against. The documents must be **highly visual and non-standardized**. Standardized filings like SEC 10-Ks are ruled out: they follow a template, and they're a popular AI training source — a big general-purpose model may have effectively memorized their shape.
 
-Candidate sources that fit (public, chart- and diagram-heavy, no two alike):
+Library shape: **about 1,000 pages total, spread across documents of no more than 100 pages each** (roughly 15–25 documents) — enough documents that finding the right one is a real task, and no single document dominates.
+
+Candidate sources, in preference order (public, chart- and diagram-heavy, no two alike):
 
 | Source | Why it's hard | Example selection rule |
 |---|---|---|
-| **NTSB accident investigation reports** | Wreckage diagrams, flight-path maps, instrument plots, data-recorder charts; every investigation formatted differently | The 12 most recent final aviation reports over 60 pages |
-| **Municipal budget books** | Every city invents its own format; packed with charts, org diagrams, fund tables | The adopted budgets of the 12 largest US cities for the current fiscal year |
-| **FDA advisory committee briefing documents** | Clinical trial figures, dosing charts, statistical plots; sponsor-authored so formats vary widely | The 12 most recent briefing books over 80 pages |
+| 1. **NTSB accident investigation reports** | Wreckage diagrams, flight-path maps, instrument plots, data-recorder charts; every investigation formatted differently | Most recent final aviation reports of 20–100 pages, newest first, until ~1,000 total pages |
+| 2. **Municipal budget books** | Every city invents its own format; packed with charts, organization diagrams, fund tables | Current adopted budgets of the largest US cities, taking documents (or self-contained volumes) of 20–100 pages, until ~1,000 total pages |
+| 3. **FDA advisory committee briefing documents** | Clinical trial figures, dosing charts, statistical plots; sponsor-authored so formats vary widely | Most recent briefing books of 20–100 pages, newest first, until ~1,000 total pages |
 
-One source (or a stated mix) is picked at approval time; the selection rule does the choosing from there — no hand-picking. New questions get written to the mix in `question-taxonomy.md`.
+One source (or a stated mix) is picked at approval time; the selection rule does the choosing from there — no hand-picking. Questions get written to the mix in `question-taxonomy.md`.
 
 - **For:** immune to the "tuned to your own benchmark" objection; genuinely visual, non-templated documents; covers cross-document and not-in-library questions.
 - **Against:** ~150 questions must be written and verified by a person (the main cost).

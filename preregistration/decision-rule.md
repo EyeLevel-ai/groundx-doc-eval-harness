@@ -1,18 +1,16 @@
-# When Are We Allowed to Claim a Win?
+# When We May Claim a Win
 
-This rule is written down and locked **before** the test runs, so the decision is mechanical — not a judgment call made while looking at the numbers.
+**The rule: we publicly claim GroundX outperformed the comparison system only if GroundX's accuracy lead is roughly 8 points or more — a gap too large for luck to explain with ~150 questions. Smaller leads are published as results, with no winner claimed.**
 
-## The rule
+This rule is locked before the test runs, so the call is mechanical — never a judgment made while looking at the numbers.
 
-Each system answers every question three times. Two independent graders (two different AI models, with published grading instructions and spot-checked by a person) mark each answer right or wrong. From those marks we compute each system's accuracy, plus a statistical confidence range — the band the true accuracy almost certainly falls inside given this many questions.
+## How the 8 points is determined
 
-**We may publicly claim GroundX outperformed the comparison system only if the *bottom* of GroundX's confidence range is higher than the *top* of the other system's range — according to both graders independently.**
+Each system answers every question three times. Two independent graders (two different AI models with published grading instructions, spot-checked by a person) mark each answer right or wrong. Statistics then give each system's accuracy a confidence range — the band its true accuracy almost certainly falls in. A win may be claimed only when **the bottom of GroundX's range is above the top of the other system's range, according to both graders independently.** With ~150 questions, that separation requires roughly an 8-point lead.
 
-In plain terms: the gap has to be big enough that it can't be explained by luck or grader noise. With ~150 questions, that means roughly an 8-point accuracy gap or more. A 74%-versus-72% result does not qualify, and we say so.
+## Published either way
 
-## What gets published no matter who wins
-
-- Accuracy and confidence range for every system tested
-- Answer accuracy and citation accuracy reported separately
-- How often each system failed for technical reasons (timeouts, errors) — those don't count as wrong answers, but they are counted and shown
-- Every question, every answer, every grade — in downloadable files, so anyone can re-check any row
+- Accuracy and confidence range for every system
+- Answer accuracy and citation accuracy, reported separately
+- Technical failure counts per system (timeouts and errors don't count as wrong answers, but are shown)
+- Every question, answer, and grade in downloadable files, so anyone can re-check any row
