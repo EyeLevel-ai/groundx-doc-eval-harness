@@ -1,6 +1,6 @@
 # Question Design
 
-~150 questions, finalized before any system runs. To keep the workload sane, questions are **drafted by an AI assistant reading the documents directly** — independent of every system under test — **and each one is verified by a person** against the source page before lock. The verifier's decision is final; drafting this way is disclosed here precisely so no one has to discover it. Each question is categorized by **where its answer lives in the document** — following the method of EyeLevel's published accuracy test ([eyelevel.ai/post/most-accurate-rag](https://www.eyelevel.ai/post/most-accurate-rag)).
+~150 questions, finalized before any system runs. To keep the workload sane, questions are **drafted by an AI assistant reading the documents directly** — independent of every system under test — **and each one is verified by a person** against the source page before lock. The verifier's decision is final. Each question is categorized by **where its answer lives in the document** — following the method of EyeLevel's published accuracy test ([eyelevel.ai/post/most-accurate-rag](https://www.eyelevel.ai/post/most-accurate-rag)).
 
 ## Why split by answer source
 

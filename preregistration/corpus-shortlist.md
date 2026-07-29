@@ -14,7 +14,6 @@ Questions are written to the mix in `question-taxonomy.md` before any system run
 
 **Secondary set:** EyeLevel's published test (1,146 pages of public Deloitte documents, 92 questions — [eyelevel.ai/post/most-accurate-rag](https://www.eyelevel.ai/post/most-accurate-rag)) also runs, for continuity with published results. It is reported separately, never as the headline: GroundX has published results on it before.
 
-## Keeping it honest
+## Locking
 
-- Document list and all questions are finalized and checksummed **before any system runs**; changes afterward would be visible to everyone.
-- NVIDIA may veto or substitute the library before the test locks; a replacement goes through the same locking process.
+The document list and all questions are finalized and checksummed before any system runs (see the [locking process](README.md)). NVIDIA — whose RAG blueprint is one of the systems under test — may veto or substitute the library before lock; a replacement goes through the same process.

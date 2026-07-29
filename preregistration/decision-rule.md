@@ -6,7 +6,7 @@ This rule is locked before the test runs, so the call is mechanical — never a 
 
 ## How the 8 points is determined
 
-Each system answers every question three times. Two independent graders (two different AI models with published grading instructions, spot-checked by a person) mark each answer right or wrong. Statistics then give each system's accuracy a confidence range — the band its true accuracy almost certainly falls in. A win may be claimed only when **the bottom of GroundX's range is above the top of the other system's range, according to both graders independently.** With ~150 questions, that separation requires roughly an 8-point lead.
+Each system answers every question three times. Two independent graders (two different AI models with published grading instructions, spot-checked by a person) mark each answer right or wrong. Statistics then give each system's accuracy a confidence range — the band its true accuracy almost certainly falls in. A win may be claimed only when the bottom of GroundX's range is above the top of the other system's range, according to both graders independently. With ~150 questions, that separation requires roughly an 8-point lead.
 
 ## Published either way
 
