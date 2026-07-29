@@ -19,9 +19,19 @@ EyeLevel already built and published exactly this kind of test: 1,146 pages of p
 
 ### Option B — follow that design on fresh documents (recommended)
 
-Build a new library the same way, on documents neither company has published results against, chosen by a stated rule — for example: *fifteen recent annual reports (10-K filings), each over 150 pages, from the largest US public companies by market value on the lock date.* Public, freely redistributable, dense with tables and charts, and naturally supports cross-document questions. New questions get written to the mix in `question-taxonomy.md`.
+Build a new library the same way, on documents neither company has published results against. The documents must be **highly visual and non-standardized**. Standardized filings like SEC 10-Ks are ruled out: they follow a template, and they're a popular AI training source — a big general-purpose model may have effectively memorized their shape.
 
-- **For:** immune to the "tuned to your own benchmark" objection; covers cross-document and not-in-library.
+Candidate sources that fit (public, chart- and diagram-heavy, no two alike):
+
+| Source | Why it's hard | Example selection rule |
+|---|---|---|
+| **NTSB accident investigation reports** | Wreckage diagrams, flight-path maps, instrument plots, data-recorder charts; every investigation formatted differently | The 12 most recent final aviation reports over 60 pages |
+| **Municipal budget books** | Every city invents its own format; packed with charts, org diagrams, fund tables | The adopted budgets of the 12 largest US cities for the current fiscal year |
+| **FDA advisory committee briefing documents** | Clinical trial figures, dosing charts, statistical plots; sponsor-authored so formats vary widely | The 12 most recent briefing books over 80 pages |
+
+One source (or a stated mix) is picked at approval time; the selection rule does the choosing from there — no hand-picking. New questions get written to the mix in `question-taxonomy.md`.
+
+- **For:** immune to the "tuned to your own benchmark" objection; genuinely visual, non-templated documents; covers cross-document and not-in-library questions.
 - **Against:** ~150 questions must be written and verified by a person (the main cost).
 
 **Recommendation: Option B for the headline test, with Option A's set run as a secondary check** — it's already public, so reporting results on it costs nothing and adds continuity with the published test.
@@ -35,5 +45,5 @@ Build a new library the same way, on documents neither company has published res
 ## Approval needed
 
 - [ ] Option A, Option B, or both
-- [ ] If B: confirm the fifteen-10-K rule, or propose another mechanical rule
+- [ ] If B: pick the document source (NTSB reports, municipal budgets, FDA briefing books, or a stated mix) and confirm its selection rule
 - [ ] Name the person who writes and verifies the questions
