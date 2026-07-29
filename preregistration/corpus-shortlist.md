@@ -4,7 +4,7 @@
 
 A real deployment answers questions against a **library of many documents**. The library and questions must therefore test:
 
-- the three answer sources, hardest first: **figures/graphs**, **table/layout structure**, **plain text** (see `question-taxonomy.md`)
+- all three places answers live in documents: **figures/graphs**, **table/layout structure**, and **plain text** (see `question-taxonomy.md`)
 - finding the right document among many, and combining information **across documents**
 - recognizing when the answer **isn't in the library at all**
 
