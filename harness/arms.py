@@ -1,9 +1,9 @@
 """Arm adapters: each maps (QAItem, config) -> ArmAnswer.
 
 All four arms return the same shape; infra errors populate `infra_error`
-(excluded from scoring, logged, reported per-arm per the methodology doc).
-Configs are pinned files under configs/ — NVIDIA-submitted configs are
-first-class substitutes.
+(excluded from scoring, logged, reported per-arm — the failure-rate cap is in
+preregistration/decision-rule.md). Configs are pinned files under configs/ —
+NVIDIA-submitted configs are first-class substitutes.
 """
 
 from __future__ import annotations
@@ -25,7 +25,8 @@ def groundx_arm(item: QAItem, cfg: dict, replicate: int) -> ArmAnswer:
 
     Retrieval from the self-hosted node (cfg['base_url']); answer synthesis uses
     the same answering-LLM config as the blueprint arm so the comparison isolates
-    the RETRIEVAL/INGESTION difference (stated in the methodology doc).
+    the RETRIEVAL/INGESTION difference. The design and the exact synthesis
+    prompt are preregistered in preregistration/answer-synthesis.md.
     """
     t0 = time.time()
     try:
@@ -80,19 +81,30 @@ def blueprint_arm(item: QAItem, cfg: dict, replicate: int) -> ArmAnswer:
 
 
 def frontier_arm(item: QAItem, cfg: dict, replicate: int) -> ArmAnswer:
-    """Frontier model, whole library per request (per protocol; native file upload
-    where the provider supports it, else full text with page markers). If the
-    library exceeds the context window, the resulting error is recorded as the
-    finding — not worked around."""
+    """Frontier model, whole library per request, in the most native form the
+    provider supports (preregistration/frontier-arm-protocol.md, rule 2).
+
+    cfg['library_content_loader'] (callable: QAItem -> provider-native message
+    content — file/image parts plus the question, so figures reach the model as
+    images) is the preferred path; cfg['library_text_loader'] (QAItem -> full
+    text with page markers) is the fallback where the provider accepts neither
+    files nor images. The config committed at lock selects the form, and the
+    form used is recorded with the results. If the library exceeds the context
+    window, the resulting error is recorded as the finding — not worked around."""
     t0 = time.time()
     try:
-        doc_text = cfg["library_text_loader"](item)  # callable: QAItem -> str (entire library, page markers)
+        loader = cfg.get("library_content_loader")
+        if loader:
+            content = loader(item)
+        else:
+            doc_text = cfg["library_text_loader"](item)  # callable: QAItem -> str (entire library, page markers)
+            content = (f"Answer from the document below. Cite the page like [p. N]. "
+                       f"If absent, say so.\n\nQUESTION: {item.question}\n\nDOCUMENT:\n{doc_text}")
         r = httpx.post(
             f"{cfg['base_url']}/chat/completions",
             headers={"Authorization": f"Bearer {os.environ[cfg['api_key_env']]}"},
             json={"model": cfg["model"], "temperature": 0, "max_tokens": 1200,
-                  "messages": [{"role": "user", "content":
-                    f"Answer from the document below. Cite the page like [p. N]. If absent, say so.\n\nQUESTION: {item.question}\n\nDOCUMENT:\n{doc_text}"}]},
+                  "messages": [{"role": "user", "content": content}]},
             timeout=300,
         )
         r.raise_for_status()

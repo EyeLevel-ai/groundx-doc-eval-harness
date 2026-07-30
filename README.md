@@ -2,7 +2,7 @@
 
 A head-to-head accuracy test for systems that answer questions from libraries of complex documents — dense tables, charts, diagrams, long filings. Anyone can re-run it, substitute their own configurations, or swap in their own document library.
 
-> **Status:** preregistration drafted; lock is pending NVIDIA's review of the corpus and question set — that review is an open invitation. Today this repo contains the rule drafts ([`preregistration/`](preregistration/)) and the runnable harness code with its self-test (below). At lock: the question file, per-system configs, and `MANIFEST.sha256` land. After the run: per-question results land in `results/`.
+> **Status:** preregistration drafted; NVIDIA's review of the corpus and question set is an open invitation — open an issue on this repo to take it up. The review is not a gate: if it hasn't happened by lock, the rules lock without it, and the manifest and published results record who reviewed the corpus and questions — and who performed the blueprint arm's tuning — so non-engagement is visible, not silent. Today this repo contains the rule drafts ([`preregistration/`](preregistration/)) and the runnable harness code with its self-test (below). At lock: the question file, per-system configs, and `MANIFEST.sha256` land. After the run: per-question results land in `results/`.
 
 ## The four systems compared
 

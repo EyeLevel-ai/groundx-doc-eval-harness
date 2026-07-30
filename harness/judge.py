@@ -2,8 +2,11 @@
 
 Judge prompts are PINNED artifacts (preregistration/judge-prompts/); this module
 loads them verbatim and refuses to run if the file hash doesn't match the
-manifest. Two judge configs ship: `nemotron` (NVIDIA-hosted; NeMo Evaluator
-integration is the committed upgrade path) and `openai`. Temperature 0.
+manifest. Judge MODEL ids are pinned literals below — no environment
+overrides — and are re-pinned in MANIFEST.sha256 at lock; `verify_judges()`
+refuses to run on a mismatch, same as `load_prompt()` does for the prompt.
+Two judge configs ship: `nemotron` (NVIDIA-hosted; NeMo Evaluator integration
+is the committed upgrade path) and `openai`. Temperature 0.
 """
 
 from __future__ import annotations
@@ -29,11 +32,26 @@ JUDGES = {
     },
     "openai": {
         "base_url": "https://api.openai.com/v1",
-        "model": os.environ.get("OPENAI_JUDGE_MODEL", "gpt-4o-2024-11-20"),
+        "model": "gpt-4o-2024-11-20",
         "api_key_env": "OPENAI_API_KEY",
         "system_extra": None,
     },
 }
+
+
+def verify_judges(manifest: dict | None = None) -> None:
+    """Refuse to run if a judge model id doesn't match the lock manifest.
+
+    The manifest pins each judge's model id under ``judge-model:<name>``; the
+    runner calls this alongside load_prompt() before scoring anything.
+    """
+    if not manifest:
+        return
+    for name, cfg in JUDGES.items():
+        want = manifest.get(f"judge-model:{name}")
+        if want and want != cfg["model"]:
+            raise RuntimeError(
+                f"judge model mismatch for {name!r}: manifest={want} actual={cfg['model']}")
 
 
 def load_prompt(manifest: dict | None = None) -> str:
