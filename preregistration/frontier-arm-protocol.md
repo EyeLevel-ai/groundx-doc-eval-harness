@@ -2,7 +2,7 @@
 
 ## Why it's in the test
 
-It answers the natural question: *how well does the best general-purpose model do on the same task with no retrieval system at all?* Same library, same questions, same graders.
+It answers the natural question: *how well does the best general-purpose model do on the same task when you just hand it the documents?* Same library, same questions, same graders — no retrieval system of our own in the path.
 
 ## The rules
 
