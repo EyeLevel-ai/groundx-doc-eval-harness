@@ -2,7 +2,7 @@
 
 A head-to-head accuracy test for systems that answer questions from libraries of complex documents — dense tables, charts, diagrams, long filings. Anyone can re-run it, substitute their own configurations, or swap in their own document library.
 
-> **Status:** the test has not yet locked. Today this repo contains the locked-rule drafts ([`preregistration/`](preregistration/)) and the runnable harness code with its self-test (below). At lock: the question file, per-system configs, and `MANIFEST.sha256` land. After the run: per-question results land in `results/`.
+> **Status:** preregistration drafted; lock is pending NVIDIA's review of the corpus and question set — that review is an open invitation. Today this repo contains the rule drafts ([`preregistration/`](preregistration/)) and the runnable harness code with its self-test (below). At lock: the question file, per-system configs, and `MANIFEST.sha256` land. After the run: per-question results land in `results/`.
 
 ## The four systems compared
 
@@ -23,7 +23,7 @@ Questions are split evenly across the three places answers live in documents —
 - **Documents are chosen by a stated rule**, not hand-picked.
 - **Configurations are inputs.** Each system's settings ship as committed files (added when the test locks); substituting your own is supported.
 - **Two independent graders** (different AI models, published instructions, human spot-checks); each question answered three times.
-- **Technical failures are separated from wrong answers** — timeouts and errors are excluded from scoring but counted and published per system.
+- **Technical failures are separated from wrong answers** — transport errors are retried, then excluded from scoring but counted and published per system; above a 10% failure rate no win is claimed against that comparison.
 - **Everything ships**: every question, answer, grade, and confidence range, in downloadable files, whatever the outcome.
 
 ## Run the self-test now

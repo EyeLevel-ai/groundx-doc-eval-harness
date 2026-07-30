@@ -12,7 +12,7 @@ import sys
 
 from .judge import JUDGES, _parse_verdict, judge_one, load_prompt
 from .schema import ArmAnswer, QAItem
-from .stats import bootstrap_ci, decision_rule, judge_agreement, replicate_variance
+from .stats import bootstrap_ci, citation_accuracy, decision_rule, judge_agreement, replicate_variance
 
 FAIL = []
 
@@ -37,20 +37,43 @@ def synth_rows(n, acc, arm, judge="nemotron", reps=3, seed=1):
     return rows
 
 
-# stats
-gx = synth_rows(150, 0.85, "groundx", seed=2)
-bp = synth_rows(150, 0.70, "blueprint_tuned", seed=3)
+# stats — rows from both judges, as the decision rule receives them
+def two_judge(n, acc, arm, seed):
+    return (synth_rows(n, acc, arm, judge="nemotron", seed=seed)
+            + synth_rows(n, acc, arm, judge="openai", seed=seed + 50))
+
+gx = two_judge(150, 0.85, "groundx", seed=2)
+bp = two_judge(150, 0.70, "blueprint_tuned", seed=3)
 p, lo, hi = bootstrap_ci(gx, n_boot=2000, seed=0)
 check("bootstrap CI sane", 0.75 < p < 0.95 and lo < p < hi, f"{p:.3f} [{lo:.3f},{hi:.3f}]")
 rv = replicate_variance(gx)
 check("replicate variance computed", 0 <= rv["spread"] < 0.15, f"spread={rv['spread']:.3f}")
-d = decision_rule(gx, bp, seed=0)
-check("decision rule separates 85 vs 70", d["featured"] is True, f"gx_low={d['groundx']['ci_low']:.3f} bp_high={d['blueprint_best']['ci_high']:.3f}")
-d2 = decision_rule(synth_rows(150, 0.74, "groundx", seed=5), synth_rows(150, 0.72, "blueprint_tuned", seed=6), seed=0)
+d = decision_rule(gx, bp, seed=0, n_boot=2000)
+check("decision rule separates 85 vs 70 under both judges", d["featured"] is True,
+      " ".join(f"{j}:sep={v['separated']}" for j, v in d["per_judge"].items()))
+d2 = decision_rule(two_judge(150, 0.74, "groundx", seed=5), two_judge(150, 0.72, "blueprint_tuned", seed=6),
+                   seed=0, n_boot=2000)
 check("decision rule refuses 74 vs 72 (small gap)", d2["featured"] is False)
+d3 = decision_rule(synth_rows(150, 0.85, "groundx", judge="nemotron", seed=2)
+                   + synth_rows(150, 0.72, "groundx", judge="openai", seed=7),
+                   bp, seed=0, n_boot=2000)
+check("decision rule refuses when only one judge separates", d3["featured"] is False)
+
+# citation accuracy — null (no citations offered) counts as incorrect for answerable questions
+cit_rows = [
+    {"qid": "q1", "judge": "nemotron", "citation_correct": True},
+    {"qid": "q2", "judge": "nemotron", "citation_correct": None},   # no citation -> incorrect
+    {"qid": "q3", "judge": "nemotron", "citation_correct": False},
+    {"qid": "u1", "judge": "nemotron", "citation_correct": None},   # unanswerable -> excluded
+]
+ca = citation_accuracy(cit_rows, unanswerable_qids={"u1"})
+check("citation null counts as incorrect, unanswerable excluded",
+      ca["n"] == 3 and abs(ca["citation_accuracy"] - 1 / 3) < 1e-9 and ca["no_citation"] == 1,
+      f"n={ca['n']} acc={ca['citation_accuracy']:.3f} no_cite={ca['no_citation']}")
 
 # judge agreement
-ag = judge_agreement(gx, synth_rows(150, 0.85, "groundx", judge="openai", seed=2))
+ag = judge_agreement(synth_rows(150, 0.85, "groundx", judge="nemotron", seed=2),
+                     synth_rows(150, 0.85, "groundx", judge="openai", seed=2))
 check("judge agreement computed", ag["n"] > 0 and ag["kappa"] is not None, f"kappa={ag['kappa']:.3f}")
 
 # verdict parsing

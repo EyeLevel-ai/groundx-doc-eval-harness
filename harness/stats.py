@@ -67,12 +67,42 @@ def judge_agreement(rows_a: list[dict], rows_b: list[dict]) -> dict:
     return {"n": n, "agreement": agree, "kappa": kappa}
 
 
-def decision_rule(gx_rows: list[dict], best_blueprint_rows: list[dict], seed: int = 0) -> dict:
-    """The pre-registered featured/not-featured decision: GX CI-low > blueprint CI-high."""
-    gx = bootstrap_ci(gx_rows, seed=seed)
-    bp = bootstrap_ci(best_blueprint_rows, seed=seed)
+def citation_accuracy(rows: list[dict], unanswerable_qids: frozenset | set = frozenset()) -> dict:
+    """The published citation-accuracy number (pre-registered in decision-rule.md).
+
+    Judges emit citation_correct=null when an answer offers no citations. For
+    answerable questions, null maps to INCORRECT here — a system cannot raise
+    its citation score by declining to cite. Unanswerable questions are
+    excluded from the denominator; the no-citation count is reported per the rule.
+    """
+    scored = [r for r in rows
+              if not r.get("infra_error") and r["qid"] not in unanswerable_qids]
+    if not scored:
+        return {"n": 0, "citation_accuracy": None, "no_citation": 0}
+    no_cite = sum(1 for r in scored if r.get("citation_correct") is None)
+    correct = sum(1 for r in scored if r.get("citation_correct") is True)
+    return {"n": len(scored), "citation_accuracy": correct / len(scored), "no_citation": no_cite}
+
+
+def decision_rule(gx_rows: list[dict], best_blueprint_rows: list[dict], seed: int = 0,
+                  n_boot: int = 10_000) -> dict:
+    """The pre-registered featured/not-featured decision: GX CI-low > blueprint
+    CI-high, according to BOTH graders independently (decision-rule.md).
+
+    Pass judged rows from both judges together; the rule splits by the `judge`
+    field and ANDs the per-judge verdicts.
+    """
+    judges = sorted({r["judge"] for r in gx_rows} | {r["judge"] for r in best_blueprint_rows})
+    per_judge = {}
+    for j in judges:
+        gx = bootstrap_ci([r for r in gx_rows if r["judge"] == j], n_boot=n_boot, seed=seed)
+        bp = bootstrap_ci([r for r in best_blueprint_rows if r["judge"] == j], n_boot=n_boot, seed=seed)
+        per_judge[j] = {
+            "groundx": {"point": gx[0], "ci_low": gx[1], "ci_high": gx[2]},
+            "blueprint_best": {"point": bp[0], "ci_low": bp[1], "ci_high": bp[2]},
+            "separated": gx[1] > bp[2],
+        }
     return {
-        "groundx": {"point": gx[0], "ci_low": gx[1], "ci_high": gx[2]},
-        "blueprint_best": {"point": bp[0], "ci_low": bp[1], "ci_high": bp[2]},
-        "featured": gx[1] > bp[2],
+        "per_judge": per_judge,
+        "featured": bool(per_judge) and all(v["separated"] for v in per_judge.values()),
     }
