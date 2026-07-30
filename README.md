@@ -2,7 +2,12 @@
 
 A head-to-head accuracy test for systems that answer questions from libraries of complex documents — dense tables, charts, diagrams, long filings. Anyone can re-run it, substitute their own configurations, or swap in their own document library.
 
-> **Status:** preregistration drafted; NVIDIA's review of the corpus and question set is an open invitation — open an issue on this repo to take it up. The review is not a gate: if it hasn't happened by lock, the rules lock without it, and the manifest and published results record who reviewed the corpus and questions — and who performed the blueprint arm's tuning — so non-engagement is visible, not silent. Today this repo contains the rule drafts ([`preregistration/`](preregistration/)) and the runnable harness code with its self-test (below). At lock: the question file, per-system configs, and `MANIFEST.sha256` land. After the run: per-question results land in `results/`.
+The pre-committed win bar, in one sentence: a win is claimed only when the bottom of GroundX's accuracy confidence range sits above the top of the comparison system's range, under both graders independently ([decision rule](preregistration/decision-rule.md)).
+
+> **Status**
+> - **Runnable today:** the harness code and its self-test (below), plus the rule drafts in [`preregistration/`](preregistration/).
+> - **Lands at lock:** the question file, per-system configs, and `MANIFEST.sha256`; per-question results land in `results/` after the run.
+> - **NVIDIA's review** of the corpus and question set is an open invitation — open an issue to take it up. It is not a gate: if it hasn't happened by lock, the rules lock without it, and the manifest records who reviewed the corpus and questions and who tuned the blueprint arm — non-engagement is visible, not silent.
 
 ## The four systems compared
 
@@ -10,7 +15,7 @@ A head-to-head accuracy test for systems that answer questions from libraries of
 |---|---|---|
 | 1 | GroundX, self-hosted | The system being evaluated |
 | 2 | NVIDIA's RAG blueprint, factory settings | The reference stack, untouched |
-| 3 | NVIDIA's RAG blueprint, tuned per its own documentation | The reference stack at its best |
+| 3 | NVIDIA's RAG blueprint, tuned per its own documentation ([tuning protocol](preregistration/blueprint-tuning-protocol.md)) | The reference stack at its best |
 | 4 | A frontier model, the whole document library supplied with every question | The no-retrieval baseline |
 
 To stand up the GroundX self-hosted arm, use the deploy scripts in the companion [groundx-nvidia-quickstart](https://github.com/EyeLevel-ai/groundx-nvidia-quickstart) repo (`deploy/` — one GPU machine, ~45 minutes).
@@ -37,6 +42,10 @@ python -m harness.selftest --live   # adds a 2-item live judge smoke (needs NVID
 ```
 
 It verifies, among other things, that the decision rule refuses to claim a win on a small gap.
+
+## How a run executes
+
+The end-to-end runner lands at lock, together with the question file and per-system configs it needs. The flow it drives is already committed: `harness/arms.py` answers each question three times per system, `harness/judge.py` grades every answer with both pinned graders (refusing to run on a manifest mismatch), and `harness/stats.py` computes accuracies, confidence ranges, and the win/no-win call. Per-question output lands in `results/`.
 
 ## Repository layout
 

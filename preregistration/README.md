@@ -9,6 +9,7 @@ Everything in this folder is finalized **before any system answers a single test
 | `questions.jsonl` *(added at lock)* | The questions themselves, with answers and source pages |
 | `judge-prompts/` | The exact grading instructions given to the two AI graders |
 | `frontier-arm-protocol.md` | The rules for the "just paste it into a giant model" comparison |
+| `blueprint-tuning-protocol.md` | Who tunes the blueprint arm, with what inputs and budget |
 | `answer-synthesis.md` | The GroundX arm's retrieval-isolation design and its exact answer-writing prompt |
 | `decision-rule.md` | The pre-agreed bar for publicly claiming a win |
 | `MANIFEST.sha256` | Checksums of all of the above — plus the harness code (`harness/*.py`) and the two AI graders' pinned model identifiers — at lock time |

@@ -19,6 +19,13 @@ CONTEXT:
 
 No other instructions are added by the GroundX arm. An optional system message comes from the answering-LLM config file — shared with the blueprint arms and committed at lock.
 
+## The abstention instruction and the unanswerable questions
+
+The prompt above tells the model to say when the documents lack the answer. On the unanswerable slice of the question set — where declaring absence *is* the correct answer — that instruction would be an advantage if the blueprint arms lacked an equivalent. Two commitments, made here before lock:
+
+1. Where the blueprint exposes a synthesis prompt, its committed configuration includes an equivalent abstention instruction, recorded in `configs/` at lock.
+2. Accuracy on the unanswerable slice is reported separately per system alongside the headline number, so readers can see how much of any gap comes from that slice.
+
 ## Locking
 
 This file and the hash of `harness/arms.py` (which contains the prompt) are covered by `MANIFEST.sha256` at lock. Changing the prompt afterward would change both hashes and be visible to everyone.
