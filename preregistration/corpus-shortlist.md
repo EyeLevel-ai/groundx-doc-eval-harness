@@ -12,8 +12,10 @@ Fallbacks if NTSB sourcing fails a licensing or availability check: municipal bu
 
 Questions are written to the mix in `question-taxonomy.md` before any system runs.
 
-A secondary set — the corpus from EyeLevel's [published accuracy test](https://www.eyelevel.ai/post/most-accurate-rag) — also runs for continuity; it is reported separately, never as the headline, because GroundX has published results on it before.
-
 ## Locking
 
 The document list and all questions are finalized and checksummed before any system runs (see the [locking process](README.md)). NVIDIA — whose RAG blueprint is one of the systems under test — may veto or substitute the library before lock; a replacement goes through the same process.
+
+---
+
+*Footnote: the corpus from EyeLevel's [earlier published test](https://www.eyelevel.ai/post/most-accurate-rag) is also re-run for continuity with that result. It is reported separately and never as the headline — GroundX has published on it before.*

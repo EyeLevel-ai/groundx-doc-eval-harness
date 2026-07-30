@@ -6,7 +6,9 @@ Each question is categorized on two independent dimensions: **where its answer l
 
 ## Why split by answer source
 
-Documents carry information three ways — in figures, in table structure, and in prose. An even split across all three, plus a set with no answer present, covers every way information has to be retrieved without weighting the test toward any one system's strengths.
+Documents carry information three ways — in figures, in table structure, and in prose. Splitting evenly across all three, plus a set with no answer present, gives each retrieval mode equal weight instead of letting one dominate the score.
+
+An even split is a choice, not a neutral fact: on a library required to be highly visual, 60% of questions depend on figures or table structure, and any system that reads layout well will benefit. The protection against that being self-serving is procedural, not rhetorical — the mix, the library, and every individual question are published before any system runs, and NVIDIA can strike or replace any of them (recorded in the manifest).
 
 ## The mix
 

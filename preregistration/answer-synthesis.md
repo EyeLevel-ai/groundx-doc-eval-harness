@@ -29,3 +29,15 @@ The prompt above tells the model to say when the documents lack the answer. On t
 ## Locking
 
 This file and the hash of `harness/arms.py` (which contains the prompt) are covered by `MANIFEST.sha256` at lock. Changing the prompt afterward would change both hashes and be visible to everyone.
+
+## Citation extraction, per arm
+
+Grading scores citations from a JSON list of `{doc, page}` pairs. The arms emit citations differently, so the conversion is preregistered and identical in spirit across arms — no arm gets credit for a convenient output format:
+
+| Arm | Source of citations | Conversion |
+|---|---|---|
+| GroundX | Structured search results (file, page, bounding box) | Taken directly from the result fields |
+| RAG blueprint (both configs) | Its citation objects where present; otherwise page references in the answer text | Citation objects mapped to `{doc, page}`; free-text references parsed by the shared parser below |
+| Provider-default baseline | Page references in the answer text (prompted for `[p. N]`) | Shared parser below |
+
+The shared parser is a single committed function applied identically to every arm's free text: it extracts document names appearing in the library and page numbers in the forms `p. N`, `page N`, `pp. N-M`, and bare `[N]` when a document is named in the same sentence. Its code is checksummed in the manifest, and per-arm counts of parsed-versus-structured citations are published with the results so anyone can see whether an arm was disadvantaged by parsing.

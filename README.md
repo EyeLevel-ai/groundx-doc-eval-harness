@@ -1,6 +1,8 @@
 # Document Question-Answering Evaluation
 
-A head-to-head accuracy test for systems that answer questions from libraries of complex documents — dense tables, charts, diagrams, long filings. Anyone can re-run it, substitute their own configurations, or swap in their own document library.
+**Preregistration stage — the rules are public, no results exist yet.** That order is the point: the document library, the questions, and the bar for claiming a win are all committed and checksummed before any system runs, so nothing can move once numbers exist. Results land here whatever they say.
+
+The test itself: a head-to-head accuracy comparison for systems that answer questions from libraries of complex documents — dense tables, charts, diagrams, long filings. It is built to be re-run by anyone, with their own configurations or their own document library.
 
 The pre-committed win bar, in one sentence: a win is claimed only when the bottom of GroundX's accuracy confidence range sits above the top of the comparison system's range, under both graders independently ([decision rule](preregistration/decision-rule.md)).
 
@@ -16,7 +18,7 @@ The pre-committed win bar, in one sentence: a win is claimed only when the botto
 | 1 | GroundX, self-hosted | The system being evaluated |
 | 2 | NVIDIA's RAG blueprint, factory settings | The reference stack, untouched |
 | 3 | NVIDIA's RAG blueprint, tuned per its own documentation ([tuning protocol](preregistration/blueprint-tuning-protocol.md)) | The reference stack at its best |
-| 4 | A frontier model, the whole document library supplied with every question | The no-retrieval baseline |
+| 4 | A frontier model, the whole document library supplied with every question ([protocol](preregistration/frontier-arm-protocol.md)) | The provider-default baseline — no retrieval system of our own |
 
 To stand up the GroundX self-hosted arm, use the deploy scripts in the companion [groundx-nvidia-quickstart](https://github.com/EyeLevel-ai/groundx-nvidia-quickstart) repo (`deploy/` — one GPU machine, ~45 minutes).
 
